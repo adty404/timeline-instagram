@@ -56,23 +56,23 @@ const delay = require('delay');
 
                 if (feedForLike[0].media_or_ad.has_liked) {
 
-                    console.log(`[ ${moment().format("HH:mm:ss")} ] `, chalk.blue('Delayed... to find new post.'));
                     do {
                         try {
+                            console.log(`[ ${moment().format("HH:mm:ss")} ] `, chalk.blue('Delayed... to find new post.'));
                             timelineResult = await InstaClient.scrollTimeline(maxId);
                             if (timelineResult.status && timelineResult.status == 'ok') {
                                 maxId = timelineResult.next_max_id
                                 feedForLike = timelineResult.feed_items;
                                 if (!feedForLike[0].media_or_ad.has_liked) {
                                     feedForLike = [];
-                                    console.log(`[ ${moment().format("HH:mm:ss")} ] `, chalk.cyan('New Post Found!!'));
                                     feedForLike.push(...timelineResult.feed_items);
+                                    console.log(`[ ${moment().format("HH:mm:ss")} ] `, chalk.cyan('New Post Found!! ' + feedForLike.length));
                                 }
                             }
-                            await delay(120000);
+                            await delay(60000);
                         } catch (e) {
                             console.log(`[ ${moment().format("HH:mm:ss")} ] `, chalk.red('Limit scrolling, delayed 1 minute.'));
-                            await delay(120000);
+                            await delay(60000);
                         }
 
 
@@ -120,7 +120,7 @@ const delay = require('delay');
                         }
                     } catch (e) {
                         console.log(`[ ${moment().format("HH:mm:ss")} ] `, chalk.red('Limit, delayed in 1 minutes'));
-                        await delay(120000);
+                        await delay(60000);
                     }
 
                 }
